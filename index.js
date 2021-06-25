@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 
 const MongoClient = require("mongodb").MongoClient;
-// const ObjectId = require("ObjectId");
 
 const cors = require("cors");
 require("dotenv").config();
@@ -26,9 +25,8 @@ client.connect((err) => {
   const ticketsCollection = client.db("airticket").collection("allTickets");
   const ordersCollection = client.db("airticket").collection("addOrder");
   const dhakaToKalkataCollection = client.db("airticket").collection("dhakaTokalkata");
-  
-  
-  // post 
+
+  // post
   app.post("/addTickets", (req, res) => {
     const newOrder = req.body;
     ordersCollection.insertOne(newOrder).then((result) => {
@@ -37,41 +35,34 @@ client.connect((err) => {
     });
   });
 
-  app.post('/addDhakaToKalkata', (req, res) => {
+  app.post("/addDhakaToKalkata", (req, res) => {
     const order = req.body;
-    dhakaToKalkataCollection.insertOne(order)
-        .then(result => {
-            res.send(result.insertedCount > 0)
-        })
-})
+    dhakaToKalkataCollection.insertOne(order).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  });
 
-
- 
-
-  app.post('/addOrder', (req, res) => {
+  app.post("/addOrder", (req, res) => {
     const order = req.body;
-    ordersCollection.insertOne(order)
-        .then(result => {
-            res.send(result.insertedCount > 0)
-        })
-})
+    ordersCollection.insertOne(order).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  });
 
-  //get tickets
+  //get
+
   app.get("/alltickets", (req, res) => {
     ticketsCollection.find().toArray((err, result) => {
       res.send(result);
     });
   });
-  
+
   app.get("/dhakaToKalkata", (req, res) => {
     dhakaToKalkataCollection.find().toArray((err, result) => {
       res.send(result);
     });
   });
 });
-
-
-
 
 app.listen(port, () => {
   console.log(`app listening at port ${port}`);
